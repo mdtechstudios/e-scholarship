@@ -1,0 +1,51 @@
+{% extends "student/base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block head %}
+{{ super() }}
+<style type="text/css">
+</style>
+{% endblock %}
+{% block content %}
+<div class="container border border-1 rounded-2">
+    <p class="fw-bold fs-4 mb-2 mt-2">All Semesters</p>
+    <div>{% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-warning bg-warning text-light alert-dismissible fade show" role="alert">
+            <strong>{{ message }}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
+    <table class="table table-striped table-hover" id="myTable" style="width:100%">
+        <thead>
+            <tr>
+                <!-- <th>ID</th> -->
+                <th>Code</th>
+                <th>Name</th>
+                <th>View</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sem in semesters: %}
+            <tr>
+                <!-- <td>{{sem._id}}</td> -->
+                <td>{{sem.code}}</td>
+                <td>{{sem.name}}</td>
+                <td>
+                    <a href="{{ url_for('student.subjects',semcode=sem.code) }}" class="btn btn-sm btn-success">View
+                        Subjects</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable();
+    });
+</script>
+{% endblock %}

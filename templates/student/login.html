@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Login - Student | Virtual Learning for Student</title>
+
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}" />
+
+    <style type="text/css">
+        body {
+            background-image: url('/static/images/bg.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand ms-5" href="{{ url_for('student.home') }}">
+                <img src="{{ url_for('static',filename='images/logo.png') }}" alt="Virtual Learning Platform"
+                    height="30" class="d-inline-block align-text-top">
+                Virtual Learning Platform
+            </a>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col mt-5">
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-warning bg-warning text-light alert-dismissible fade show" role="alert">
+                    <strong>{{ message }}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+            </div>
+            <div class="col-6">
+                <div class="border border-1 rounded-5 mt-5 ps-5 pe-5 bg-white">
+                    <p class="fs-4 fw-bold mt-4 mb-4">Student Login</p>
+                    <form method="POST" action="{{ url_for('student.login') }}">
+                        {{ form.csrf_token }}
+                        <div class="form-outline mb-4">
+                            {{ form.email.label(for="email",class="form-label") }}
+                            {{ form.email(class="form-control form-control-md",id="email") }}
+                        </div>
+                        <div class="form-outline mb-4">
+                            {{ form.password.label(for="password",class="form-label") }}
+                            {{ form.password(class="form-control form-control-md",id="password") }}
+                        </div>
+                        <div class="form-outline mb-4">
+                            <p>Don't have an account? Please <a href="{{ url_for('student.register') }}">Register</a>
+                            </p>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-md btn-rounded btn-block mb-4">Sign in</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col"></div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static',filename='js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/main.js') }}"></script>
+</body>
+
+</html>

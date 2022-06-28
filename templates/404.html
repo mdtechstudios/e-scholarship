@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>404 | Page Not Found | Virtual Learning for Student</title>
+
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}" />
+
+    <style type="text/css">
+        /* body {
+            background-image: url('http://127.0.0.1:5000/static/images/loginbg.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+        } */
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand ms-5" href="{{ url_for('home') }}">
+                <img src="{{ url_for('static',filename='images/logo.png') }}" alt="Virtual Learning Platform"
+                    height="30" class="d-inline-block align-text-top">
+                Virtual Learning Platform
+            </a>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col-6 text-center">
+                <div class="border border-1 rounded-5 mt-2 pb-5 ps-5 pe-5">
+                    <h1 style="font-size: 18em;color:royalblue">404</h1>
+                    <p class="fw-bold fs-3">The page you are looking for is not found</p><br>
+                    <a href="{{ url_for('home') }}" class="btn btn-sm btn-primary">Back to Home</a>
+                </div>
+            </div>
+            <div class="col"></div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static',filename='js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/main.js') }}"></script>
+</body>
+
+</html>
