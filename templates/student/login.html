@@ -19,10 +19,10 @@
 <body>
     <nav class="navbar navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand ms-5" href="{{ url_for('student.login') }}">
-                <img src="{{ url_for('static',filename='images/logo.png') }}" alt="Virtual Learning Platform"
-                    height="30" class="d-inline-block align-text-top">
-                Virtual Learning Platform
+            <a class="navbar-brand ms-5" href="{{ url_for('student.home') }}">
+                <img src="{{ url_for('static',filename='images/logo.png') }}" alt=" E-Scholarship" height="30"
+                    class="d-inline-block align-text-top">
+                E-Scholarship
             </a>
         </div>
     </nav>
@@ -44,14 +44,15 @@
                 <div class="border border-1 rounded-5 mt-5 ps-5 pe-5 bg-white">
                     <p class="fs-4 fw-bold mt-4 mb-4">Student Login</p>
                     <form method="POST" action="{{ url_for('student.login') }}">
-                        {{ form.csrf_token }}
                         <div class="form-outline mb-4">
-                            {{ form.email.label(for="email",class="form-label") }}
-                            {{ form.email(class="form-control form-control-md",id="email") }}
+                            <label for="email" class="form-label">Email address</label>
+                            <input name="email" type="email" class="form-control form-control-md" id="email"
+                                placeholder="email@gmail.com" required>
                         </div>
                         <div class="form-outline mb-4">
-                            {{ form.password.label(for="password",class="form-label") }}
-                            {{ form.password(class="form-control form-control-md",id="password") }}
+                            <label for="password" class="form-label">Password</label>
+                            <input name="password" type="password" class="form-control form-control-md" id="password"
+                                required>
                         </div>
                         <div class="form-outline mb-4">
                             <p>Don't have an account? Please <a href="{{ url_for('student.register') }}">Register</a>

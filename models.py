@@ -29,3 +29,21 @@ class ScholarshipTable(db.Model):
     def __repr__(self):
         return '<Scholarship %r>' % self.name
 
+
+
+# Applied Scholarship Table
+class AppliedScholarshipTable(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    sid = db.Column(db.Integer,  nullable=False)
+    studid = db.Column(db.Integer,  nullable=False)
+    def __repr__(self):
+        return '<AppliedScholarship %r>' % self.id
+
+
+# Approved Scholarship Table
+class ApprovedScholarshipTable(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    sid = db.Column(db.Integer,  nullable=False)
+    studid = db.Column(db.Integer,  nullable=False)
+    def __repr__(self):
+        return '<ApprovedScholarship %r>' % self.id

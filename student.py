@@ -9,7 +9,27 @@ student = Blueprint('student', __name__, url_prefix='/student')
 def home():
     if not auth():
         return redirect(url_for('student.login'))
-    return render_template('admin/home.html')
+    return render_template('student/home.html')
+
+
+
+# student regiser
+@student.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == "POST":
+
+        # Get Form Data
+        name = request.form.get('name')
+        email = request.form.get('email')
+        phoneno = request.form.get('phoneno')
+        password = request.form.get('password')
+        student = StudentTable(name=name, phoneno=phoneno, email=email, password=password)
+        db.session.add(student)
+        db.session.commit()
+        flash('Student successfully registered')
+        return redirect(url_for('student.login'))
+    return render_template('student/register.html')
+
 
 
 # student Login

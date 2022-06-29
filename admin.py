@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for,flash, request,jsonify, session
 from database import db
-from models import AdminTable, StudentTable, ScholarshipTable
+from models import AdminTable, StudentTable, ScholarshipTable,AppliedScholarshipTable
 
 admin = Blueprint('admin', __name__, url_prefix='/admin')
 
@@ -11,6 +11,22 @@ def home():
     if not auth():
         return redirect(url_for('admin.login'))
     return render_template('admin/home.html')
+
+
+# Add Scholarship
+@admin.route('/add-scholarship', methods=['GET','POST'])
+def addscholarship():
+    if not auth():
+        return redirect(url_for('admin.login'))
+    if request.method == 'POST':
+        name = request.form.get('name')
+        description = request.form.get('description')
+        schol = ScholarshipTable(name=name,description=description)
+        db.session.add(schol)
+        db.session.commit()
+        flash('Scholarship added')
+        return redirect(url_for('admin.viewscholarships'))
+    return render_template('admin/add-scholarship.html')
 
 
 # View All Scholarships
@@ -28,8 +44,32 @@ def viewscholarships():
 def viewscholarship(sid):
     if not auth():
         return redirect(url_for('admin.login'))
+    students = StudentTable.query.all()
     scholarship = ScholarshipTable.query.filter_by(id=sid).first()
-    return render_template('admin/view-scholarship.html',scholarship=scholarship)
+    appliedscholarship = AppliedScholarshipTable.query.filter_by(sid=sid).all()
+    print(appliedscholarship)
+    return render_template('admin/view-scholarship.html',scholarship=scholarship,appliedscholarship=appliedscholarship,students=students)
+
+
+
+# View All Students
+@admin.route('/students', methods=['GET','POST'])
+def viewstudents():
+    if not auth():
+        return redirect(url_for('admin.login'))
+    students = StudentTable.query.all()
+    return render_template('admin/view-students.html',students=students)
+
+
+
+# View Student by ID
+@admin.route('/student/<int:sid>', methods=['GET','POST'])
+def viewstudent(sid):
+    if not auth():
+        return redirect(url_for('admin.login'))
+    student = StudentTable.query.filter_by(id=sid).first()
+    return render_template('admin/view-student.html',student=student)
+
 
 
 # Admin Login

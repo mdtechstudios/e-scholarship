@@ -1,14 +1,13 @@
 {% extends "admin/base.html" %}
-{% block title %}View All Scholarship {% endblock %}
+{% block title %}View All Students {% endblock %}
 {% block head %}
 {{ super() }}
 <style type="text/css">
 </style>
 {% endblock %}
 {% block content %}
-
 <div class="container border border-1 rounded-2">
-    <p class="fw-bold fs-4 mb-2 mt-2">Applied Students</p>
+    <p class="fw-bold fs-4 mb-2 mt-2">View Students</p>
     <div>{% with messages = get_flashed_messages() %}
         {% if messages %}
         {% for message in messages %}
@@ -25,40 +24,30 @@
             <tr>
                 <th>ID</th>
                 <th>Name</th>
-                <th>Phone Number</th>
+                <th>Phone No</th>
                 <th>Email</th>
-                <th>View Student</th>
-                <th>Approve</th>
-                <th>Reject</th>
+                <th>View</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            {% for stud in students: %}
-            {% for appschol in appliedscholarship: %}
-            {% if stud.id == appschol.studid %}
+            {% for s in students: %}
             <tr>
-                <td>{{stud.id}}</td>
-                <td>{{stud.name}}</td>
-                <td>{{stud.phoneno}}</td>
-                <td>{{stud.email}}</td>
+                <td>{{s.id}}</td>
+                <td>{{s.name}}</td>
+                <td>{{s.phoneno}}</td>
+                <td>{{s.email}}</td>
                 <td>
-                    <a href="{{ url_for('admin.viewstudent',sid=stud.id) }}" class="btn btn-sm btn-success">View
-                        Student</a>
+                    <a href="{{ url_for('admin.viewstudent',sid=s.id) }}" class="btn btn-sm btn-success">View</a>
                 </td>
                 <td>
-                    <a href="{{ url_for('admin.home') }}" class="btn btn-sm btn-warning">Approve</a>
-                </td>
-                <td>
-                    <a href="{{ url_for('admin.home') }}" class="btn btn-sm btn-danger">Reject</a>
+                    <a href="{{ url_for('admin.viewstudent',sid=s.id) }}" class="btn btn-sm btn-danger">Delete</a>
                 </td>
             </tr>
-            {% endif %}
-            {% endfor %}
             {% endfor %}
         </tbody>
     </table>
 </div>
-
 <script>
     $(document).ready(function () {
         $('#myTable').DataTable();

@@ -3,7 +3,7 @@
 
 <head>
     {% block head %}
-    <title>{% block title %}{% endblock %} - Student | Virtual Learning for Student</title>
+    <title>{% block title %}{% endblock %} - Student | E-Scholarship</title>
 
     <link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}" />
@@ -20,9 +20,9 @@
     <nav class="navbar navbar-expand-lg bg-dark navbar-dark fixed-top">
         <div class="container-fluid">
             <a class="navbar-brand ms-5" href="{{ url_for('student.home') }}">
-                <img src="{{ url_for('static',filename='images/logo.png') }}" alt="Virtual Learning Platform"
-                    height="30" class="d-inline-block align-text-top me-3">
-                Virtual Learning Platform
+                <img src="{{ url_for('static',filename='images/logo.png') }}" alt=" E-Scholarship" height="30"
+                    class="d-inline-block align-text-top me-3">
+                E-Scholarship
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -43,9 +43,9 @@
                             Lecturers
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="{{ url_for('admin.viewlecturers') }}">View Lecturers</a>
+                            <li><a class="dropdown-item" href="{{ url_for('admin.home') }}">View Lecturers</a>
                             </li>
-                            <li><a class="dropdown-item" href="{{ url_for('admin.addlecturers') }}">Add New
+                            <li><a class="dropdown-item" href="{{ url_for('admin.home') }}">Add New
                                     Lecturer</a>
                             </li>
                         </ul>

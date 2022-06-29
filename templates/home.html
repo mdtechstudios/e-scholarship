@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Home | Virtual Learning for Student</title>
+    <title>Home | E-Scholarship</title>
 
     <link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}" />
@@ -20,45 +20,13 @@
     <nav class="navbar navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand ms-5" href="{{ url_for('home') }}">
-                <img src="{{ url_for('static',filename='images/logo.png') }}" alt="Virtual Learning Platform"
-                    height="30" class="d-inline-block align-text-top">
-                Virtual Learning Platform
+                <img src="{{ url_for('static',filename='images/logo.png') }}" alt="E-Scholarship" height="30"
+                    class="d-inline-block align-text-top">
+                E-Scholarship
             </a>
         </div>
     </nav>
     <div class="container mt-5">
-        <!-- <div class="row">
-            <div class="col">
-                <div class="card text-bg-primary mb-3" style="max-width: 18rem;">
-                    <div class="card-header">Student Corner</div>
-                    <div class="card-body">
-                        <div class="card-body">
-                            <a href="{{ url_for('student.login') }}" class="btn btn-sm btn-light">Login</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card text-bg-secondary mb-3" style="max-width: 18rem;">
-                    <div class="card-header">Lecturer Corner</div>
-                    <div class="card-body">
-                        <div class="card-body">
-                            <a href="{{ url_for('lecturer.login') }}" class="btn btn-sm btn-light">Login</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card text-bg-success mb-3" style="max-width: 18rem;">
-                    <div class="card-header">Admin Dasboard</div>
-                    <div class="card-body">
-                        <div class="card-body">
-                            <a href="{{ url_for('admin.login') }}" class="btn btn-sm btn-light">Login</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> -->
         <div class="row">
             <div class="col">
                 <div class="card" style="width: 18rem;">
@@ -71,17 +39,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col">
-                <div class="card" style="width: 18rem;">
-                    <img src="{{ url_for('static',filename='images/teacher.png') }}" class="card-img-top"
-                        alt="Students Corner">
-                    <div class="card-body">
-                        <h5 class="card-title">Lecturer Corner</h5>
-                        <p class="card-text"></p>
-                        <a href="{{ url_for('lecturer.login') }}" class="btn btn-primary">Login</a>
-                    </div>
-                </div>
-            </div>
+            <!-- -->
             <div class="col">
                 <div class="card" style="width: 18rem;">
                     <img src="{{ url_for('static',filename='images/admin.png') }}" class="card-img-top"

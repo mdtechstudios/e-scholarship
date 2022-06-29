@@ -29,13 +29,11 @@ with app.app_context():
 
 @app.route('/')
 def home():
-    return 'Home Page'
-
+    return render_template('home.html')
 
 @app.errorhandler(404)
 def not_found(e):
-    return 'Page not found'
-
+    return render_template('404.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

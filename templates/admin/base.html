@@ -49,7 +49,8 @@
                             <li><a class="dropdown-item" href="{{ url_for('admin.viewscholarships') }}">View
                                     Scholarships</a>
                             </li>
-                            <li><a class="dropdown-item" href="{{ url_for('admin.home') }}">Add New Scholarship</a>
+                            <li><a class="dropdown-item" href="{{ url_for('admin.addscholarship') }}">Add New
+                                    Scholarship</a>
                             </li>
                         </ul>
                     </li>
@@ -60,11 +61,11 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li>
-                                <a class="dropdown-item" href="{{ url_for('admin.home') }}">View Students</a>
+                                <a class="dropdown-item" href="{{ url_for('admin.viewstudents') }}">View Students</a>
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item dropdown">
+                    <!-- <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             Semesters
@@ -92,7 +93,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="{{ url_for('admin.home') }}">Contents</a>
-                    </li>
+                    </li> -->
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="{{ url_for('admin.logout') }}">Logout</a>
                     </li>
