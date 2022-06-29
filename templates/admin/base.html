@@ -3,7 +3,7 @@
 
 <head>
     {% block head %}
-    <title>{% block title %}{% endblock %} - Admin Panel | Virtual Learning for Student</title>
+    <title>{% block title %}{% endblock %} Admin Panel | e-Scholarship</title>
 
     <link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}" />
@@ -28,7 +28,7 @@
             <a class="navbar-brand ms-5" href="{{ url_for('admin.home') }}">
                 <img src="{{ url_for('static',filename='images/logo.png') }}" alt="Virtual Learning Platform"
                     height="30" class="d-inline-block align-text-top me-3">
-                Virtual Learning Platform
+                E-Scholarship
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -43,13 +43,13 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            Lecturers
+                            Scholarships
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="{{ url_for('admin.viewlecturers') }}">View Lecturers</a>
+                            <li><a class="dropdown-item" href="{{ url_for('admin.viewscholarships') }}">View
+                                    Scholarships</a>
                             </li>
-                            <li><a class="dropdown-item" href="{{ url_for('admin.addlecturers') }}">Add New
-                                    Lecturer</a>
+                            <li><a class="dropdown-item" href="{{ url_for('admin.home') }}">Add New Scholarship</a>
                             </li>
                         </ul>
                     </li>
@@ -60,7 +60,7 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li>
-                                <a class="dropdown-item" href="{{ url_for('admin.viewstudents') }}">View Students</a>
+                                <a class="dropdown-item" href="{{ url_for('admin.home') }}">View Students</a>
                             </li>
                         </ul>
                     </li>
@@ -70,9 +70,9 @@
                             Semesters
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="{{ url_for('admin.viewsemesters') }}">View Semester</a>
+                            <li><a class="dropdown-item" href="{{ url_for('admin.home') }}">View Semester</a>
                             </li>
-                            <li><a class="dropdown-item" href="{{ url_for('admin.addsem') }}">Add New
+                            <li><a class="dropdown-item" href="{{ url_for('admin.home') }}">Add New
                                     Semester</a>
                             </li>
                         </ul>
@@ -83,15 +83,15 @@
                             Subjects
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="{{ url_for('admin.viewsubjects') }}">View Subjects</a>
+                            <li><a class="dropdown-item" href="{{ url_for('admin.home') }}">View Subjects</a>
                             </li>
-                            <li><a class="dropdown-item" href="{{ url_for('admin.addsub') }}">Add New
+                            <li><a class="dropdown-item" href="{{ url_for('admin.home') }}">Add New
                                     Subject</a>
                             </li>
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="{{ url_for('admin.viewcontents') }}">Contents</a>
+                        <a class="nav-link" aria-current="page" href="{{ url_for('admin.home') }}">Contents</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="{{ url_for('admin.logout') }}">Logout</a>

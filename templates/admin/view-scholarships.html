@@ -1,5 +1,5 @@
-{% extends "student/base.html" %}
-{% block title %}Dashboard{% endblock %}
+{% extends "admin/base.html" %}
+{% block title %}View Scholarships {% endblock %}
 {% block head %}
 {{ super() }}
 <style type="text/css">
@@ -7,7 +7,7 @@
 {% endblock %}
 {% block content %}
 <div class="container border border-1 rounded-2">
-    <p class="fw-bold fs-4 mb-2 mt-2">All Semesters</p>
+    <p class="fw-bold fs-4 mb-2 mt-2">View Scholarships</p>
     <div>{% with messages = get_flashed_messages() %}
         {% if messages %}
         {% for message in messages %}
@@ -22,21 +22,21 @@
     <table class="table table-striped table-hover" id="myTable" style="width:100%">
         <thead>
             <tr>
-                <!-- <th>ID</th> -->
-                <th>Code</th>
+                <th>ID</th>
                 <th>Name</th>
-                <th>View</th>
+                <th>Description</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            {% for sem in semesters: %}
+            {% for s in scholarships: %}
             <tr>
-                <!-- <td>{{sem._id}}</td> -->
-                <td>{{sem.code}}</td>
-                <td>{{sem.name}}</td>
+                <td>{{s.id}}</td>
+                <td>{{s.name}}</td>
+                <td>{{s.description}}</td>
                 <td>
-                    <a href="{{ url_for('student.subjects',semcode=sem.code) }}" class="btn btn-sm btn-success">View
-                        Subjects</a>
+                    <a href="{{ url_for('admin.viewscholarship',sid=s.id) }}" class="btn btn-sm btn-success">View
+                        Application</a>
                 </td>
             </tr>
             {% endfor %}

@@ -7,41 +7,6 @@
 {% endblock %}
 {% block content %}
 <div class="container">
-    <div class="row">
-        <div class="col">
-            <div class="card" style="width: 18rem;">
-                <img src="{{ url_for('static',filename='images/student.png') }}" class="card-img-top"
-                    alt="Students Corner">
-                <div class="card-body">
-                    <h5 class="card-title">Students Corner</h5>
-                    <p class="card-text"></p>
-                    <a href="{{ url_for('admin.viewstudents') }}" class="btn btn-primary">View</a>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card" style="width: 18rem;">
-                <img src="{{ url_for('static',filename='images/teacher.png') }}" class="card-img-top"
-                    alt="Students Corner">
-                <div class="card-body">
-                    <h5 class="card-title">Lecturer Corner</h5>
-                    <p class="card-text"></p>
-                    <a href="{{ url_for('admin.viewlecturers') }}" class="btn btn-primary">View</a>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card" style="width: 18rem;">
-                <img src="{{ url_for('static',filename='images/docs.png') }}" class="card-img-top"
-                    alt="Students Corner">
-                <div class="card-body">
-                    <h5 class="card-title">Contents</h5>
-                    <p class="card-text"></p>
-                    <a href="{{ url_for('admin.viewcontents') }}" class="btn btn-primary">View</a>
-                </div>
-            </div>
-        </div>
-    </div>
 
 </div>
 {% endblock %}
