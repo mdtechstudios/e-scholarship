@@ -35,7 +35,8 @@ def viewscholarships():
     if not auth():
         return redirect(url_for('admin.login'))
     scholarships = ScholarshipTable.query.all()
-    return render_template('admin/view-scholarships.html',scholarships=scholarships)
+    studid = session['studentID']
+    return render_template('admin/view-scholarships.html',scholarships=scholarships,studid=studid)
 
 
 

@@ -17,6 +17,8 @@ class StudentTable(db.Model):
     phoneno = db.Column(db.Integer,nullable=False)
     email = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(50), nullable=False)
+    isApproved = db.Column(db.Boolean, default=False)
+
     def __repr__(self):
         return '<Student %r>' % self.email
 
@@ -36,6 +38,8 @@ class AppliedScholarshipTable(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     sid = db.Column(db.Integer,  nullable=False)
     studid = db.Column(db.Integer,  nullable=False)
+    isApproved = db.Column(db.Boolean, default=False)
+    isApplied = db.Column(db.Boolean, default=False)
     def __repr__(self):
         return '<AppliedScholarship %r>' % self.id
 

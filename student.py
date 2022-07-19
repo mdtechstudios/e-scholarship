@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for,flash, request,jsonify, session
 from database import db
-from models import StudentTable, ScholarshipTable
+from models import StudentTable, ScholarshipTable, AppliedScholarshipTable
 
 student = Blueprint('student', __name__, url_prefix='/student')
 
@@ -9,9 +9,40 @@ student = Blueprint('student', __name__, url_prefix='/student')
 def home():
     if not auth():
         return redirect(url_for('student.login'))
-    return render_template('student/home.html')
+    studid = session['studentID']
+    scholarships = ScholarshipTable.query.all()
+    app_schol = AppliedScholarshipTable.query.filter_by(studid=studid).all()
+    return render_template('student/home.html',scholarships=scholarships,studid=studid,app_schol=app_schol)
 
 
+@student.route('/applied-scholarship', methods=['GET','POST'])
+def appliedschol():
+    studid = session['studentID']
+    scholarships = ScholarshipTable.query.all()
+    app_schol = AppliedScholarshipTable.query.filter_by(studid=studid)
+    return render_template('student/applied-schol.html',scholarships=scholarships,studid=studid,app_schol=app_schol)
+
+@student.route('/apply/<sid>/<studid>',methods=['GET','POST'])
+def applyscholarship(sid,studid):
+
+    # try:
+    #     applied_schol = AppliedScholarshipTable(sid=sid,studid=studid)
+    #     db.session.add(applied_schol)
+    #     db.session.commit()
+    #     flash('Scholarship Applied')
+    # except:
+    #     flash('Already applied for scholarship')
+
+    hasData = AppliedScholarshipTable.query.filter_by(studid=studid,sid=sid).all()
+    print(hasData)
+    if hasData != []:
+        flash('Already applied for scholarship')
+    else:
+        applied_schol = AppliedScholarshipTable(sid=sid,studid=studid)
+        db.session.add(applied_schol)
+        db.session.commit()
+        flash('Scholarship Applied')
+    return redirect(url_for('student.home'))
 
 # student regiser
 @student.route('/register', methods=['GET', 'POST'])
@@ -45,6 +76,7 @@ def login():
 
         # Check if User Already Exist
         student = StudentTable.query.filter_by(email=email, password=password).first()
+
         print(student)
         
         db.session.commit()
