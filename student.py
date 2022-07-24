@@ -11,7 +11,8 @@ def home():
         return redirect(url_for('student.login'))
     scholarships = Scholarship.query.all()
     studid = session['studentID']
-    return render_template('student/home.html',scholarships=scholarships,studid=studid)
+    student = Student.query.filter_by(id=studid).first()
+    return render_template('student/home.html',scholarships=scholarships,studid=studid,student=student)
 
 
 @student.route('/applied-scholarship', methods=['GET','POST'])
@@ -19,7 +20,8 @@ def appliedschol():
     studid = session['studentID']
     applied_scholarships = AppliedScholarship.query.filter_by(student_id=studid).all()
     scholarships = Scholarship.query.all()
-    return render_template('student/applied-schol.html',applied_scholarships=applied_scholarships,scholarships=scholarships)
+    student = Student.query.filter_by(id=studid).first()
+    return render_template('student/applied-schol.html',student=student,applied_scholarships=applied_scholarships,scholarships=scholarships)
 
 
 @student.route('/apply/<sid>/<studid>',methods=['GET','POST'])

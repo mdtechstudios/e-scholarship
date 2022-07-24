@@ -6,6 +6,7 @@
 </style>
 {% endblock %}
 {% block content %}
+{% if student.is_approved == True: %}
 <div class="container border border-1 rounded-2">
     <p class="fw-bold fs-4 mb-2 mt-2">Applied Scholarships</p>
     <div>{% with messages = get_flashed_messages() %}
@@ -57,6 +58,11 @@
         </tbody>
     </table>
 </div>
+{% else: %}
+<div class="container border border-1 rounded-2 p-5 text-center">
+    <h3>Student not yet Approved! Please try again after some times</h3>
+</div>
+{% endif %}
 <script>
     $(document).ready(function () {
         $('#myTable').DataTable();

@@ -28,7 +28,7 @@
                 <th>Phone Number</th>
                 <th>Email</th>
                 <th>Is Approved ?</th>
-                <th>View Student</th>
+                <!-- <th>View Student</th> -->
                 <th>Approve/Reject</th>
             </tr>
         </thead>
@@ -47,10 +47,10 @@
                     <p>Approved</p>
                     {% endif %}
                 </td>
-                <td>
+                <!-- <td>
                     <a href="{{ url_for('admin.home') }}" class="">View
                         Student Profile</a>
-                </td>
+                </td> -->
                 {% if as.is_approved == False: %}
                 <td>
                     <a href="{{ url_for('admin.sapprove',id=as.scholarship_id) }}"

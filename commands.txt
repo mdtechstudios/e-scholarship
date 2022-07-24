@@ -1,0 +1,19 @@
+
+
+// For Windows
+1) Install Virtual Enviornment
+py -3 -m venv venv
+
+2) Activate Virtual Enviornment
+venv\Scripts\activate
+
+3) Install Packages (1 Time)
+pip3 install -r requirements.txt
+
+
+4) Delete Existing DB in Xampp and create `escholarship`
+
+4) Run Flask App
+set FLASK_APP=app.py
+set FLASK_ENV=development
+flask run
