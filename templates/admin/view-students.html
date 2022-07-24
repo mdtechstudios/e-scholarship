@@ -1,5 +1,5 @@
 {% extends "admin/base.html" %}
-{% block title %}View All Students {% endblock %}
+{% block title %}View Scholarships {% endblock %}
 {% block head %}
 {{ super() }}
 <style type="text/css">
@@ -7,7 +7,7 @@
 {% endblock %}
 {% block content %}
 <div class="container border border-1 rounded-2">
-    <p class="fw-bold fs-4 mb-2 mt-2">View Students</p>
+    <p class="fw-bold fs-4 mb-2 mt-2">View Scholarships</p>
     <div>{% with messages = get_flashed_messages() %}
         {% if messages %}
         {% for message in messages %}
@@ -24,10 +24,12 @@
             <tr>
                 <th>ID</th>
                 <th>Name</th>
-                <th>Phone No</th>
                 <th>Email</th>
-                <th>View</th>
-                <th>Action</th>
+                <th>Phone Number</th>
+                <th>Is Approved?</th>
+                <!-- <th>Report</th>
+                <th>Approve/Reject</th> -->
+                <th>Delete</th>
             </tr>
         </thead>
         <tbody>
@@ -35,14 +37,30 @@
             <tr>
                 <td>{{s.id}}</td>
                 <td>{{s.name}}</td>
-                <td>{{s.phoneno}}</td>
                 <td>{{s.email}}</td>
+                <td>{{s.phoneno}}</td>
+                <!-- <td>{{s.is_approved}}</td> -->
                 <td>
-                    <a href="{{ url_for('admin.viewstudent',sid=s.id) }}" class="btn btn-sm btn-success">View</a>
+                    {% if s.is_approved == False: %}
+                    <p>Not Approved</p>
+                    {% else: %}
+                    <p>Approved</p>
+                    {% endif %}
                 </td>
+                <!-- <td>
+                    <a href="{{ url_for('admin.home') }}" class="">View
+                        Student Profile</a>
+                </td> -->
+                {% if s.is_approved == False: %}
                 <td>
-                    <a href="{{ url_for('admin.viewstudent',sid=s.id) }}" class="btn btn-sm btn-danger">Delete</a>
+                    <a href="{{ url_for('admin.studapprove',id=s.id) }}" class="btn btn-sm btn-warning">Approve</a>
+                    <a href="{{ url_for('admin.studreject',id=s.id) }}" class="btn btn-sm btn-danger">Reject</a>
                 </td>
+                {% else: %}
+                <td>
+                    <button class="btn btn-sm btn-success" disabled>Approved</button>
+                </td>
+                {% endif %}
             </tr>
             {% endfor %}
         </tbody>

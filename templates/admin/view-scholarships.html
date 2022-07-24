@@ -25,7 +25,9 @@
                 <th>ID</th>
                 <th>Name</th>
                 <th>Description</th>
-                <th>Action</th>
+                <th>View</th>
+                <th>Report</th>
+                <th>Delete</th>
             </tr>
         </thead>
         <tbody>
@@ -35,8 +37,15 @@
                 <td>{{s.name}}</td>
                 <td>{{s.description}}</td>
                 <td>
-                    <a href="{{ url_for('admin.viewscholarship',sid=s.id) }}" class="btn btn-sm btn-success">View
+                    <a href="{{ url_for('admin.viewscholarship',id=s.id) }}" class="btn btn-sm btn-success">View
                         Application</a>
+                </td>
+                <td>
+                    <a href="{{ url_for('admin.generatereport',id=s.id) }}" class="btn btn-sm btn-primary">View
+                        Report</a>
+                </td>
+                <td>
+                    <a href="{{ url_for('admin.deletescholarship',id=s.id) }}" class="btn btn-sm btn-danger">Delete</a>
                 </td>
             </tr>
             {% endfor %}

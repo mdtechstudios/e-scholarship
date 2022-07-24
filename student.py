@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for,flash, request,jsonify, session
 from database import db
-from models import StudentTable, ScholarshipTable, AppliedScholarshipTable
+from models import Scholarship, Student, AppliedScholarship
 
 student = Blueprint('student', __name__, url_prefix='/student')
 
@@ -9,18 +9,18 @@ student = Blueprint('student', __name__, url_prefix='/student')
 def home():
     if not auth():
         return redirect(url_for('student.login'))
+    scholarships = Scholarship.query.all()
     studid = session['studentID']
-    scholarships = ScholarshipTable.query.all()
-    app_schol = AppliedScholarshipTable.query.filter_by(studid=studid).all()
-    return render_template('student/home.html',scholarships=scholarships,studid=studid,app_schol=app_schol)
+    return render_template('student/home.html',scholarships=scholarships,studid=studid)
 
 
 @student.route('/applied-scholarship', methods=['GET','POST'])
 def appliedschol():
     studid = session['studentID']
-    scholarships = ScholarshipTable.query.all()
-    app_schol = AppliedScholarshipTable.query.filter_by(studid=studid)
-    return render_template('student/applied-schol.html',scholarships=scholarships,studid=studid,app_schol=app_schol)
+    applied_scholarships = AppliedScholarship.query.filter_by(student_id=studid).all()
+    scholarships = Scholarship.query.all()
+    return render_template('student/applied-schol.html',applied_scholarships=applied_scholarships,scholarships=scholarships)
+
 
 @student.route('/apply/<sid>/<studid>',methods=['GET','POST'])
 def applyscholarship(sid,studid):
@@ -33,34 +33,31 @@ def applyscholarship(sid,studid):
     # except:
     #     flash('Already applied for scholarship')
 
-    hasData = AppliedScholarshipTable.query.filter_by(studid=studid,sid=sid).all()
+    hasData = AppliedScholarship.query.filter_by(scholarship_id=sid,student_id=studid).all()
     print(hasData)
     if hasData != []:
         flash('Already applied for scholarship')
     else:
-        applied_schol = AppliedScholarshipTable(sid=sid,studid=studid)
+        applied_schol = AppliedScholarship(scholarship_id=sid,student_id=studid)
         db.session.add(applied_schol)
         db.session.commit()
         flash('Scholarship Applied')
     return redirect(url_for('student.home'))
 
-# student regiser
+# Student Regiser
 @student.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == "POST":
-
-        # Get Form Data
         name = request.form.get('name')
         email = request.form.get('email')
         phoneno = request.form.get('phoneno')
         password = request.form.get('password')
-        student = StudentTable(name=name, phoneno=phoneno, email=email, password=password)
+        student = Student(name=name,email=email,phoneno=phoneno,password=password,is_approved=False)
         db.session.add(student)
         db.session.commit()
         flash('Student successfully registered')
         return redirect(url_for('student.login'))
     return render_template('student/register.html')
-
 
 
 # student Login
@@ -69,18 +66,11 @@ def login():
     if auth():
         return redirect(url_for('student.home'))
     if request.method == "POST":
-
-        # Get Form Data
         email = request.form.get('email')
         password = request.form.get('password')
-
-        # Check if User Already Exist
-        student = StudentTable.query.filter_by(email=email, password=password).first()
-
+        student = Student.query.filter_by(email=email, password=password).first()
         print(student)
-        
         db.session.commit()
-
         if student is None:
             flash('Invalid Email/Password')
             return render_template('student/login.html')

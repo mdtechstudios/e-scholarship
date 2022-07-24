@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for,flash, request,jsonify, session
 from database import db
-from models import AdminTable, StudentTable, ScholarshipTable,AppliedScholarshipTable
+from models import AdminTable, Scholarship, AppliedScholarship, Student
 
 admin = Blueprint('admin', __name__, url_prefix='/admin')
 
@@ -13,15 +13,63 @@ def home():
     return render_template('admin/home.html')
 
 
+# View All Students
+@admin.route('/students', methods=['GET','POST'])
+def viewstudents():
+    if not auth():
+        return redirect(url_for('admin.login'))
+    students = Student.query.all()
+    # studid = session['studentID']
+    return render_template('admin/view-students.html', students=students)
+
+
+
+# View All Students
+@admin.route('/delete-student/<id>', methods=['GET','POST'])
+def deletestudent(id):
+    if not auth():
+        return redirect(url_for('admin.login'))
+    schol = AppliedScholarship.query.filter_by(student_id=id).delete()
+    s = Student.query.filter_by(id=id).delete()
+    db.session.commit()
+    flash("Student Deleted")
+    # studid = session['studentID']
+    return redirect(url_for("admin.viewstudents"))
+
+# Approve Student
+@admin.route('/approve-student/<id>',methods=['GET','POST'])
+def studapprove(id):
+    if not auth():
+        return redirect(url_for('admin.login'))
+    s = Student.query.filter_by(id=id).first()
+    s.is_approved = True
+    db.session.commit()
+    flash("Student Approved")
+    return redirect(url_for('admin.viewstudents'))
+
+
+
+# Approve Student
+@admin.route('/reject-student/<id>',methods=['GET','POST'])
+def studreject(id):
+    if not auth():
+        return redirect(url_for('admin.login'))
+    s = Student.query.filter_by(id=id).delete()
+    #s.is_approved = False
+    db.session.commit()
+    flash("Student Rejected")
+    return redirect(url_for('admin.viewstudents'))
+
+
 # Add Scholarship
 @admin.route('/add-scholarship', methods=['GET','POST'])
 def addscholarship():
     if not auth():
         return redirect(url_for('admin.login'))
-    if request.method == 'POST':
+    if request.method == "POST":
         name = request.form.get('name')
         description = request.form.get('description')
-        schol = ScholarshipTable(name=name,description=description)
+        schol = Scholarship(name=name,description=description, is_approved=False)
         db.session.add(schol)
         db.session.commit()
         flash('Scholarship added')
@@ -34,43 +82,67 @@ def addscholarship():
 def viewscholarships():
     if not auth():
         return redirect(url_for('admin.login'))
-    scholarships = ScholarshipTable.query.all()
-    studid = session['studentID']
-    return render_template('admin/view-scholarships.html',scholarships=scholarships,studid=studid)
+    scholarships = Scholarship.query.all()
+    # studid = session['studentID']
+    return render_template('admin/view-scholarships.html', scholarships=scholarships)
 
 
-
-# View Scholarship by ID
-@admin.route('/scholarship/<int:sid>', methods=['GET','POST'])
-def viewscholarship(sid):
+# View Individual Scholarship Application by ID
+@admin.route('/scholarship/<id>', methods=['GET','POST'])
+def viewscholarship(id):
     if not auth():
         return redirect(url_for('admin.login'))
-    students = StudentTable.query.all()
-    scholarship = ScholarshipTable.query.filter_by(id=sid).first()
-    appliedscholarship = AppliedScholarshipTable.query.filter_by(sid=sid).all()
-    print(appliedscholarship)
-    return render_template('admin/view-scholarship.html',scholarship=scholarship,appliedscholarship=appliedscholarship,students=students)
+    scholarships = Scholarship.query.all()
+    applied_students = AppliedScholarship.query.filter_by(scholarship_id=id).all()
+    # studid = session['studentID']
+    return render_template('admin/view-applications.html', applied_students=applied_students)
 
 
-
-# View All Students
-@admin.route('/students', methods=['GET','POST'])
-def viewstudents():
+# Generagte Applied Stduent report
+@admin.route('/generate-report/<id>', methods=['GET','POST'])
+def generatereport(id):
     if not auth():
         return redirect(url_for('admin.login'))
-    students = StudentTable.query.all()
-    return render_template('admin/view-students.html',students=students)
+    scholarships = Scholarship.query.all()
+    applied_students = AppliedScholarship.query.filter_by(scholarship_id=id,is_approved=True).all()
+    # studid = session['studentID']
+    return render_template('admin/application-report.html', applied_students=applied_students)
 
 
-
-# View Student by ID
-@admin.route('/student/<int:sid>', methods=['GET','POST'])
-def viewstudent(sid):
+# Delete Scholarship
+@admin.route('/delete-scholarship/<id>', methods=['GET','POST'])
+def deletescholarship(id):
     if not auth():
         return redirect(url_for('admin.login'))
-    student = StudentTable.query.filter_by(id=sid).first()
-    return render_template('admin/view-student.html',student=student)
+    s = Scholarship.query.filter_by(id=id).delete()
+    db.session.commit()
+    flash("Scholarship Deleted")
+    return redirect(url_for('admin.viewscholarships'))
 
+
+# Scholarship Approve
+@admin.route('/sapprove/<id>')
+def sapprove(id):
+    if not auth():
+        return redirect(url_for('admin.login'))
+    s = AppliedScholarship.query.filter_by(scholarship_id=id).first()
+    s.is_approved = True
+    db.session.commit()
+    flash("Student Approved")
+    return redirect(url_for('admin.viewscholarship',id=id))
+
+
+# Scholarship reject
+@admin.route('/sreject/<id>')
+def sreject(id):
+    if not auth():
+        return redirect(url_for('admin.login'))
+    #s = AppliedScholarship.query.filter_by(scholarship_id=id).first()
+    s = AppliedScholarship.query.filter_by(scholarship_id=id).delete()
+    # s.is_approved = False
+    db.session.commit()
+    flash("Student Rejected")
+    return redirect(url_for('admin.viewscholarship',id=id))
 
 
 # Admin Login
@@ -100,7 +172,6 @@ def logout():
         return redirect(url_for('admin.login'))
     session['adminID'] = None
     return redirect(url_for('admin.login'))
-
 
 
 # Check isLoggedIn

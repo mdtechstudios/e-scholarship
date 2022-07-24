@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geerate Report</title>
+</head>
+
+<body>
+    <table border="1" width="100">
+        <thead>
+            <tr>
+                <th>Student ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for as in applied_students: %}
+            <tr>
+                <td>{{as.appliedschol.id}}</td>
+                <td>{{as.appliedschol.name}}</td>
+                <td>{{as.appliedschol.email}}</td>
+                <td>{{as.appliedschol.phoneno}}</td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+</body>
+
+</html>

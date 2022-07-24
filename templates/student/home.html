@@ -24,7 +24,7 @@
             <tr>
                 <th>ID</th>
                 <th>Name</th>
-                <th>Description</th>
+                <!-- <th>Description</th> -->
                 <th>Apply</th>
             </tr>
         </thead>
@@ -33,10 +33,38 @@
             <tr>
                 <td>{{s.id}}</td>
                 <td>{{s.name}}</td>
-                <td>{{s.description}}</td>
+                <!-- <td>{{s.description}}</td> -->
                 <td>
-                    <a href="{{ url_for('student.applyscholarship',sid=s.id,studid=studid) }}"
-                        class="btn btn-sm btn-success">Apply</a>
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-md btn-success" data-bs-toggle="modal"
+                        data-bs-target="#example{{s.id}}">
+                        Apply
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="example{{s.id}}" tabindex=" -1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Scholarship Description</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>{{s.description}}</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <a href="{{ url_for('student.applyscholarship',sid=s.id,studid=studid) }}"
+                                        class="btn btn-sm btn-success">Apply</a>
+                                    <!-- <button type="button" class="btn btn-sm btn-primary">Apply</button> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </td>
             </tr>
             {% endfor %}

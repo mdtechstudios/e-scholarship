@@ -4,50 +4,51 @@ from database import db
 # Admin Table
 class AdminTable(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(150), unique=True, nullable=False)
+    name = db.Column(db.String(200),nullable=True)
+    email = db.Column(db.String(200),unique=True,nullable=False)
     password = db.Column(db.String(50), nullable=False)
     def __repr__(self):
         return '<Admin %r>' % self.email
 
 
 # Student Table
-class StudentTable(db.Model):
+class Student(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name =  db.Column(db.String(150),nullable=False)
-    phoneno = db.Column(db.Integer,nullable=False)
-    email = db.Column(db.String(150), unique=True, nullable=False)
-    password = db.Column(db.String(50), nullable=False)
-    isApproved = db.Column(db.Boolean, default=False)
-
+    name = db.Column(db.String(50), nullable=False)
+    email = db.Column(db.String(500),nullable=False, unique=True)
+    phoneno = db.Column(db.Integer,nullable=False,unique=True)
+    password = db.Column(db.String(50),nullable=False)
+    is_approved = db.Column(db.Boolean, default=False)
+    # scholarships = db.relationship('Scholarship', backref='schol')
+    applied_scholarship = db.relationship('AppliedScholarship',backref='appliedschol')
+    additional_info = db.relationship('AdditionalInfo', backref='addinfo')
     def __repr__(self):
-        return '<Student %r>' % self.email
+        return '<Student %r>' % self.name
 
 
 # Scholarship Table
-class ScholarshipTable(db.Model):
+class Scholarship(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(150), nullable=False)
-    description = db.Column(db.String(500), nullable=False)
+    name = db.Column(db.String(500),nullable=False)
+    description = db.Column(db.String(500),nullable=False)
+    is_approved = db.Column(db.Boolean, default=False)
     def __repr__(self):
-        return '<Scholarship %r>' % self.name
+        return '<Scholarship %r>' % self.id
 
-
-
-# Applied Scholarship Table
-class AppliedScholarshipTable(db.Model):
+# AppliedScholarship Table
+class AppliedScholarship(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    sid = db.Column(db.Integer,  nullable=False)
-    studid = db.Column(db.Integer,  nullable=False)
-    isApproved = db.Column(db.Boolean, default=False)
-    isApplied = db.Column(db.Boolean, default=False)
+    scholarship_id = db.Column(db.Integer, db.ForeignKey('scholarship.id'))
+    student_id = db.Column(db.Integer, db.ForeignKey('student.id'))
+    is_approved = db.Column(db.Boolean, default=False)
     def __repr__(self):
         return '<AppliedScholarship %r>' % self.id
 
-
-# Approved Scholarship Table
-class ApprovedScholarshipTable(db.Model):
+# AdditionalInfo Table
+class AdditionalInfo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    sid = db.Column(db.Integer,  nullable=False)
-    studid = db.Column(db.Integer,  nullable=False)
+    aadhar = db.Column(db.String(500),nullable=False)
+    marks_card = db.Column(db.String(500),nullable=False)
+    student_id = db.Column(db.Integer, db.ForeignKey('student.id'))
     def __repr__(self):
-        return '<ApprovedScholarship %r>' % self.id
+        return '<AdditionalInfo %r>' % self.id
