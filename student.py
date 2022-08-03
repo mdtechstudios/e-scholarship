@@ -1,8 +1,10 @@
-from flask import Blueprint, render_template, redirect, url_for,flash, request,jsonify, session
+from flask import Blueprint, render_template, redirect, url_for,flash, request,jsonify, session, current_app
 from database import db
-from models import Scholarship, Student, AppliedScholarship
+from models import Scholarship, Student, AppliedScholarship, AdditionalInfo
+import os
 
 student = Blueprint('student', __name__, url_prefix='/student')
+
 
 # student Home/Dashboard
 @student.route('/', methods=['GET','POST'])
@@ -24,17 +26,9 @@ def appliedschol():
     return render_template('student/applied-schol.html',student=student,applied_scholarships=applied_scholarships,scholarships=scholarships)
 
 
+
 @student.route('/apply/<sid>/<studid>',methods=['GET','POST'])
 def applyscholarship(sid,studid):
-
-    # try:
-    #     applied_schol = AppliedScholarshipTable(sid=sid,studid=studid)
-    #     db.session.add(applied_schol)
-    #     db.session.commit()
-    #     flash('Scholarship Applied')
-    # except:
-    #     flash('Already applied for scholarship')
-
     hasData = AppliedScholarship.query.filter_by(scholarship_id=sid,student_id=studid).all()
     print(hasData)
     if hasData != []:
@@ -45,6 +39,37 @@ def applyscholarship(sid,studid):
         db.session.commit()
         flash('Scholarship Applied')
     return redirect(url_for('student.home'))
+
+
+@student.route('/upload', methods = ['POST'])  
+def upload():  
+    if request.method == 'POST':
+        file = request.files['aadhar']
+        filee = request.files['markscard']
+        student_id = request.form.get('student_id')
+        scholarship_id = request.form.get('sid')
+        aadhar = file.filename
+        marks_card = filee.filename
+        file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], aadhar))
+        filee.save(os.path.join(current_app.config['UPLOAD_FOLDER'], marks_card))
+        print(aadhar)
+        print(marks_card)
+        hasData = AppliedScholarship.query.filter_by(scholarship_id=scholarship_id,student_id=student_id).all()
+        print(hasData)
+        if hasData != []:
+            flash('Already applied for scholarship')
+            return redirect(url_for('student.home'))
+    
+        applied_schol = AppliedScholarship(scholarship_id=scholarship_id,student_id=student_id)
+        db.session.add(applied_schol)
+        db.session.commit()
+
+        add_info = AdditionalInfo(aadhar=str(aadhar),marks_card=str(marks_card),student_id=student_id)
+        db.session.add(add_info)
+        db.session.commit()
+        return redirect(url_for('student.home'))
+
+
 
 # Student Regiser
 @student.route('/register', methods=['GET', 'POST'])

@@ -49,18 +49,32 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Scholarship Description</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel">Please upload the required document
+                                    </h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <p>{{s.description}}</p>
+
+                                    <form action="{{ url_for('student.upload') }}" method="POST"
+                                        enctype="multipart/form-data">
+                                        <label for="aadhar">Aadhar Card</label><br>
+                                        <input id="aadhar" type="file" name="aadhar" required /><br>
+                                        <label for="markscard">Marks Card</label><br>
+                                        <input id="markscard" type="file" name="markscard" required /><br>
+                                        <input type="hidden" name="student_id" value="{{studid}}" /><br>
+                                        <input type="hidden" name="sid" value="{{s.id}}" /><br>
+                                        <button type="submit" class="btn btn-sm btn-success">Apply</button>
+                                    </form>
+                                    <br>
+                                    <h6>Scholarship Description</h6>
+                                    <p>{{s.description}}</p><br>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary"
                                         data-bs-dismiss="modal">Close</button>
-                                    <a href="{{ url_for('student.applyscholarship',sid=s.id,studid=studid) }}"
-                                        class="btn btn-sm btn-success">Apply</a>
+                                    <!-- <a href="{{ url_for('student.applyscholarship',sid=s.id,studid=studid) }}"
+                                        class="btn btn-sm btn-success">Apply</a> -->
                                     <!-- <button type="button" class="btn btn-sm btn-primary">Apply</button> -->
                                 </div>
                             </div>

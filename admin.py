@@ -54,10 +54,10 @@ def studapprove(id):
 def studreject(id):
     if not auth():
         return redirect(url_for('admin.login'))
-    s = Student.query.filter_by(id=id).delete()
-    #s.is_approved = False
+    s = Student.query.filter_by(id=id).first()
+    s.is_approved = False
     db.session.commit()
-    flash("Student Rejected")
+    flash("Student Not Approved")
     return redirect(url_for('admin.viewstudents'))
 
 
@@ -121,11 +121,11 @@ def deletescholarship(id):
 
 
 # Scholarship Approve
-@admin.route('/sapprove/<id>')
-def sapprove(id):
+@admin.route('/sapprove/<id>/<studid>')
+def sapprove(id,studid):
     if not auth():
         return redirect(url_for('admin.login'))
-    s = AppliedScholarship.query.filter_by(scholarship_id=id).first()
+    s = AppliedScholarship.query.filter_by(scholarship_id=id,student_id=studid).first()
     s.is_approved = True
     db.session.commit()
     flash("Student Approved")
@@ -133,12 +133,12 @@ def sapprove(id):
 
 
 # Scholarship reject
-@admin.route('/sreject/<id>')
-def sreject(id):
+@admin.route('/sreject/<id>/<studid>')
+def sreject(id,studid):
     if not auth():
         return redirect(url_for('admin.login'))
     #s = AppliedScholarship.query.filter_by(scholarship_id=id).first()
-    s = AppliedScholarship.query.filter_by(scholarship_id=id).delete()
+    s = AppliedScholarship.query.filter_by(scholarship_id=id,student_id=studid).delete()
     # s.is_approved = False
     db.session.commit()
     flash("Student Rejected")

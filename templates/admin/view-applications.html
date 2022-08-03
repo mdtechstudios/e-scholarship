@@ -53,9 +53,9 @@
                 </td> -->
                 {% if as.is_approved == False: %}
                 <td>
-                    <a href="{{ url_for('admin.sapprove',id=as.scholarship_id) }}"
+                    <a href="{{ url_for('admin.sapprove',id=as.scholarship_id,studid=as.appliedschol.id) }}"
                         class="btn btn-sm btn-warning">Approve</a>
-                    <a href="{{ url_for('admin.sreject',id=as.scholarship_id) }}"
+                    <a href="{{ url_for('admin.sreject',id=as.scholarship_id,studid=as.appliedschol.id) }}"
                         class="btn btn-sm btn-danger">Reject</a>
                 </td>
                 {% else: %}
@@ -63,14 +63,7 @@
                     <button class="btn btn-sm btn-success" disabled>Approved</button>
                 </td>
                 {% endif %}
-                <!-- <td>
-                    <a href="{{ url_for('admin.sapprove',id=as.scholarship_id) }}"
-                        class="btn btn-sm btn-warning">Approve</a>
-                </td>
-                <td>
-                    <a href="{{ url_for('admin.sreject',id=as.scholarship_id) }}"
-                        class="btn btn-sm btn-danger">Reject</a>
-                </td> -->
+
             </tr>
             {% endfor %}
 

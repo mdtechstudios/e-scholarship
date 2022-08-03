@@ -18,6 +18,7 @@ app.config['MYSQL_CURSORCLASS'] = "DictCursor"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 UPLOADS_PATH = join(dirname(realpath(__file__)), 'static\\uploads')
 app.config['UPLOAD_FOLDER'] = UPLOADS_PATH
+app.config['MAX_CONTENT-PATH'] = 100000
 
 app.register_blueprint(admin)
 app.register_blueprint(student)
