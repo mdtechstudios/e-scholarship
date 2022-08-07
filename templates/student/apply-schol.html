@@ -1,0 +1,118 @@
+{% extends "student/base.html" %}
+{% block title %}Apply Scholarship {% endblock %}
+{% block head %}
+{{ super() }}
+<style type="text/css">
+</style>
+{% endblock %}
+{% block content %}
+{% if student.is_approved == True: %}
+<div class="container border border-1 rounded-2">
+    <p class="fw-bold fs-4 mb-2 mt-2">Apply Now</p>
+    <div>{% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-warning bg-warning text-light alert-dismissible fade show" role="alert">
+            <strong>{{ message }}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
+
+    <form method="POST" action="{{ url_for('student.apply',id=id,studid=studid) }}" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col">
+                <div class="form-outline mb-4">
+                    <label for="name" class="form-label">Aadhar Number</label>
+                    <input name="aadhar_no" type="number" maxlength="12" class="form-control form-control-md" id="name"
+                        placeholder="1234 5678 9101" required>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-outline mb-4">
+                    <label for="aadhar" class="form-label">Aadhar Image</label>
+                    <input name="aadhar" type="file" class="form-control form-control-md" id="aadhar_no" required>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-outline mb-4">
+                    <label for="marks_card_sslc_no" class="form-label">SSLC (%)</label>
+                    <input name="marks_card_sslc_no" type="number" class="form-control form-control-md"
+                        id="marks_card_sslc_no" required>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-outline mb-4">
+                    <label for="marks_card_sslc" class="form-label">SSLC Marksheet</label>
+                    <input name="marks_card_sslc" type="file" class="form-control form-control-md" id="marks_card_sslc"
+                        required>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-outline mb-4">
+                    <label for="marks_card_puc_no" class="form-label">PUC (%)</label>
+                    <input name="marks_card_puc_no" type="number" class="form-control form-control-md"
+                        id="marks_card_puc_no" required>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-outline mb-4">
+                    <label for="marks_card_puc" class="form-label">PUC Marksheet</label>
+                    <input name="marks_card_puc" type="file" class="form-control form-control-md" id="marks_card_sslc"
+                        required>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-outline mb-4">
+                    <label for="marks_card_degree_no" class="form-label">Degree (%)</label>
+                    <input name="marks_card_degree_no" type="number" class="form-control form-control-md"
+                        id="marks_card_degree_no" required>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-outline mb-4">
+                    <label for="marks_card_degree" class="form-label">Degree Marksheet</label>
+                    <input name="marks_card_degree" type="file" class="form-control form-control-md"
+                        id="marks_card_degree" required>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-outline mb-4">
+                    <label for="income_cert" class="form-label">Income Certificate</label>
+                    <input name="income_cert" type="file" class="form-control form-control-md" id="income_cert"
+                        required>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-outline mb-4">
+                    <label for="fees_receipt" class="form-label">Fees Receipt</label>
+                    <input name="fees_receipt" type="file" class="form-control form-control-md" id="fees_receipt"
+                        required>
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-md btn-rounded btn-block mb-4">Apply</button>
+    </form>
+
+</div>
+{% else: %}
+<div class="container border border-1 rounded-2 p-5 text-center">
+    <h3>Student not yet Approved! Please try again after some times</h3>
+</div>
+{% endif %}
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable();
+    });
+</script>
+{% endblock %}

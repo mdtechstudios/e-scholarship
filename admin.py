@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for,flash, request,jsonify, session
 from database import db
-from models import AdminTable, Scholarship, AppliedScholarship, Student
+from models import AdminTable, Scholarship, AppliedScholarship, Student, AdditionalInfo
 
 admin = Blueprint('admin', __name__, url_prefix='/admin')
 
@@ -69,7 +69,7 @@ def addscholarship():
     if request.method == "POST":
         name = request.form.get('name')
         description = request.form.get('description')
-        schol = Scholarship(name=name,description=description, is_approved=False)
+        schol = Scholarship(name=name,description=description, is_closed=False)
         db.session.add(schol)
         db.session.commit()
         flash('Scholarship added')
@@ -94,9 +94,19 @@ def viewscholarship(id):
         return redirect(url_for('admin.login'))
     scholarships = Scholarship.query.all()
     applied_students = AppliedScholarship.query.filter_by(scholarship_id=id).all()
+    add_info = AdditionalInfo.query.all()
     # studid = session['studentID']
-    return render_template('admin/view-applications.html', applied_students=applied_students)
+    return render_template('admin/view-applications.html', applied_students=applied_students,add_info=add_info)
 
+
+@admin.route('/view-student/<scholarship_id>/<studid>', methods=['GET','POST'])
+def viewstud(scholarship_id,studid):
+    if not auth():
+        return redirect(url_for('admin.login'))
+    stud_info = Student.query.filter_by(id=studid).first()
+    add_info = AdditionalInfo.query.filter_by(scholarship_id=scholarship_id,student_id=studid).first()
+    return render_template('admin/view-student.html',add_info=add_info,stud_info=stud_info)
+    
 
 # Generagte Applied Stduent report
 @admin.route('/generate-report/<id>', methods=['GET','POST'])
@@ -109,14 +119,40 @@ def generatereport(id):
     return render_template('admin/application-report.html', applied_students=applied_students)
 
 
+# Update Scholarship
+@admin.route('/update-scholarship/<id>', methods=['GET','POST'])
+def updatescholarship(id):
+    if not auth():
+        return redirect(url_for('admin.login'))
+    if request.method == "POST":
+        name = request.form.get("name")
+        description = request.form.get('description')
+        s = Scholarship.query.filter_by(id=id).first()
+        s.name = name
+        s.description = description
+        db.session.commit()
+        flash('Scholarship Updated')
+        return redirect(url_for('admin.viewscholarships'))
+    s = Scholarship.query.filter_by(id=id).first()
+    db.session.commit()
+    # flash("Scholarship Updated")
+    # return redirect(url_for('admin.viewscholarships'))
+    return render_template('admin/update-scholarship.html',id=id,s=s)
+
+
+
 # Delete Scholarship
 @admin.route('/delete-scholarship/<id>', methods=['GET','POST'])
 def deletescholarship(id):
     if not auth():
         return redirect(url_for('admin.login'))
-    s = Scholarship.query.filter_by(id=id).delete()
+    s = Scholarship.query.filter_by(id=id).first()
+    if s.is_closed == True:
+        s.is_closed = False
+    else:
+        s.is_closed = True
     db.session.commit()
-    flash("Scholarship Deleted")
+    flash("Scholarship Disabled")
     return redirect(url_for('admin.viewscholarships'))
 
 
@@ -137,9 +173,8 @@ def sapprove(id,studid):
 def sreject(id,studid):
     if not auth():
         return redirect(url_for('admin.login'))
-    #s = AppliedScholarship.query.filter_by(scholarship_id=id).first()
-    s = AppliedScholarship.query.filter_by(scholarship_id=id,student_id=studid).delete()
-    # s.is_approved = False
+    s = AppliedScholarship.query.filter_by(scholarship_id=id,student_id=studid).first()
+    s.is_approved = False
     db.session.commit()
     flash("Student Rejected")
     return redirect(url_for('admin.viewscholarship',id=id))

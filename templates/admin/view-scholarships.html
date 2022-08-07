@@ -27,7 +27,9 @@
                 <th>Description</th>
                 <th>View</th>
                 <th>Report</th>
-                <th>Delete</th>
+                <th>Edit/Update</th>
+                <th>Status</th>
+                <th>Close Application</th>
             </tr>
         </thead>
         <tbody>
@@ -46,7 +48,26 @@
                         Report</a>
                 </td>
                 <td>
-                    <a href="{{ url_for('admin.deletescholarship',id=s.id) }}" class="btn btn-sm btn-danger">Delete</a>
+                    {% if s.is_closed == True %}
+                    <p style="color: red;font-weight:bold;">Application Closed</p>
+                    {% else: %}
+                    <p style="color: green;font-weight:bold;">Application Opened</p>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ url_for('admin.updatescholarship',id=s.id) }}" class="btn btn-sm btn-primary">Edit</a>
+                </td>
+                <td>
+                    {% if s.is_closed == True %}
+                    <a href="{{ url_for('admin.deletescholarship',id=s.id) }}" class="btn btn-sm btn-success">
+                        Enable
+                    </a>
+                    {% else: %}
+                    <a href="{{ url_for('admin.deletescholarship',id=s.id) }}" class="btn btn-sm btn-danger">
+                        Disable
+                    </a>
+                    {% endif %}
+
                 </td>
             </tr>
             {% endfor %}

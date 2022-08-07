@@ -1,17 +1,13 @@
 {% extends "admin/base.html" %}
-{% block title %}Add Scholarship{% endblock %}
+{% block title %}Update Scholarship{% endblock %}
 {% block head %}
 {{ super() }}
 <style type="text/css">
-    .ck-editor__editable[role="textbox"] {
-        /* editing area */
-        min-height: 200px;
-    }
 </style>
 {% endblock %}
 {% block content %}
 <div class="container border border-1 rounded-2">
-    <p class="fw-bold fs-4 mb-2 mt-2">Add Scholarship</p>
+    <p class="fw-bold fs-4 mb-2 mt-2">Update Scholarship</p>
     <div>{% with messages = get_flashed_messages() %}
         {% if messages %}
         {% for message in messages %}
@@ -24,25 +20,28 @@
         {% endwith %}
     </div>
     <div class="container">
-        <form method="POST" action="{{ url_for('admin.addscholarship') }}">
+        <form method="POST" action="{{ url_for('admin.updatescholarship',id=id) }}">
             <div class="row">
                 <div class="col">
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
-                        <input name="name" type="text" class="form-control" id="name" required>
+                        <input name="name" type="text" class="form-control" id="name" value="{{s.name}}" required>
                     </div>
                 </div>
                 <div class="col">
                     <label for="description" class="form-label">Description</label>
-                    <textarea name="description" type="text" class="form-control" id="description" required></textarea>
+                    <textarea name="description" type="text" class="form-control" id="description"
+                        required>{{s.description}}</textarea>
                 </div>
             </div>
-            <button type="sub" class="btn btn-primary btn-md btn-rounded btn-block mb-4">Add
+            <button type="submit" class="btn btn-primary btn-md btn-rounded btn-block mb-4">Update
                 Scholarship</button>
         </form>
     </div>
 </div>
 <script type="text/javascript">
-    // bkLib.onDomLoaded(function () { nicEditors.allTextAreas() });
+    // $(document).ready(function () {
+    //     $('select').multiselect();
+    // });  
 </script>
 {% endblock %}

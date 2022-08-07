@@ -1,0 +1,101 @@
+{% extends "student/base.html" %}
+{% block title %}View Scholarships {% endblock %}
+{% block head %}
+{{ super() }}
+<style type="text/css">
+</style>
+{% endblock %}
+{% block content %}
+{% if student.is_approved == True: %}
+<div class="container border border-1 rounded-2">
+    <p class="fw-bold fs-4 mb-2 mt-2">All Scholarships</p>
+    <div>{% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-warning bg-warning text-light alert-dismissible fade show" role="alert">
+            <strong>{{ message }}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
+
+    <table class="table table-striped table-hover" id="myTable" style="width:100%">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <!-- <th>Description</th> -->
+                <th>Apply</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for s in scholarships: %}
+            <tr>
+                <td>{{s.id}}</td>
+                <td>{{s.name}}</td>
+                <!-- <td>{{s.description}}</td> -->
+                <td>
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-md btn-success" data-bs-toggle="modal"
+                        data-bs-target="#example{{s.id}}">
+                        Apply
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="example{{s.id}}" tabindex=" -1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Please upload the required document
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+
+                                    <!-- <form action="{{ url_for('student.upload') }}" method="POST"
+                                        enctype="multipart/form-data">
+                                        <label for="aadhar">Aadhar Card</label><br>
+                                        <input id="aadhar" type="file" name="aadhar" required /><br>
+                                        <label for="markscard">Marks Card</label><br>
+                                        <input id="markscard" type="file" name="markscard" required /><br>
+                                        <input type="hidden" name="student_id" value="{{studid}}" /><br>
+                                        <input type="hidden" name="sid" value="{{s.id}}" /><br>
+                                        <button type="submit" class="btn btn-sm btn-success">Apply</button>
+                                    </form>
+                                    <br> -->
+                                    <h6>Scholarship Description</h6>
+                                    <p>{{s.description}}</p><br>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <a href="{{ url_for('student.apply',id=s.id,studid=studid) }}"
+                                        class="btn btn-sm btn-success">Apply</a>
+                                    <!-- <button type="button" class="btn btn-sm btn-primary">Apply</button> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+{% else: %}
+<div class="container border border-1 rounded-2 p-5 text-center">
+    <h3>Student not yet Approved! Please try again after some times</h3>
+</div>
+{% endif %}
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable();
+    });
+</script>
+{% endblock %}

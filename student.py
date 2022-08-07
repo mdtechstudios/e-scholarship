@@ -5,7 +5,6 @@ import os
 
 student = Blueprint('student', __name__, url_prefix='/student')
 
-
 # student Home/Dashboard
 @student.route('/', methods=['GET','POST'])
 def home():
@@ -17,6 +16,17 @@ def home():
     return render_template('student/home.html',scholarships=scholarships,studid=studid,student=student)
 
 
+# student Home/Dashboard
+@student.route('/view-scholarships', methods=['GET','POST'])
+def viewschol():
+    if not auth():
+        return redirect(url_for('student.login'))
+    scholarships = Scholarship.query.filter_by(is_closed=False).all()
+    studid = session['studentID']
+    student = Student.query.filter_by(id=studid).first()
+    return render_template('student/view-schol.html',scholarships=scholarships,studid=studid,student=student)
+
+
 @student.route('/applied-scholarship', methods=['GET','POST'])
 def appliedschol():
     studid = session['studentID']
@@ -25,6 +35,78 @@ def appliedschol():
     student = Student.query.filter_by(id=studid).first()
     return render_template('student/applied-schol.html',student=student,applied_scholarships=applied_scholarships,scholarships=scholarships)
 
+
+
+@student.route('/apply/<id>/<studid>', methods=['GET','POST'])
+def apply(id,studid):
+    if request.method == 'POST':
+        data = request.form
+        print(data)
+
+        # Get All Files
+        aadhar_file = request.files['aadhar']
+        marks_card_sslc_file = request.files['marks_card_sslc']
+        marks_card_puc_file = request.files['marks_card_puc']
+        marks_card_degree_file = request.files['marks_card_degree']
+        income_cert_file = request.files['income_cert']
+        fees_receipt_file = request.files['fees_receipt']
+
+        # Get File Names
+        aadhar = aadhar_file.filename
+        marks_card_sslc = marks_card_sslc_file.filename
+        marks_card_puc = marks_card_puc_file.filename
+        marks_card_degree = marks_card_degree_file.filename
+        income_cert = income_cert_file.filename
+        fees_receipt = fees_receipt_file.filename
+
+        # Get Input Fileds
+        aadhar_no = request.form.get('aadhar_no')
+        marks_card_sslc_no = request.form.get('marks_card_sslc_no')
+        marks_card_puc_no = request.form.get('marks_card_puc_no')
+        marks_card_degree_no =  request.form.get('marks_card_degree_no')
+
+        # Save file to OS
+        aadhar_file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], aadhar))
+        marks_card_sslc_file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], marks_card_sslc))
+        marks_card_puc_file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], marks_card_puc))
+        marks_card_degree_file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], marks_card_degree))
+        income_cert_file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], income_cert))
+        fees_receipt_file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], fees_receipt))
+
+        hasData = AppliedScholarship.query.filter_by(scholarship_id=id,student_id=studid).all()
+        print(hasData)
+        if hasData != []:
+            flash('Already applied for scholarship')
+            return redirect(url_for('student.viewschol'))
+    
+        # Insert Applied Scholarship
+        applied_schol = AppliedScholarship(scholarship_id=id,student_id=studid)
+        db.session.add(applied_schol)
+        db.session.commit()
+
+        # Insert Additional Info
+        add_info = AdditionalInfo(
+            aadhar=aadhar,
+            aadhar_no = aadhar_no,
+            marks_card_sslc = marks_card_sslc,
+            marks_card_sslc_no = marks_card_sslc_no,
+            marks_card_puc = marks_card_puc,
+            marks_card_puc_no = marks_card_puc_no,
+            marks_card_degree = marks_card_degree,
+            marks_card_degree_no = marks_card_degree_no,
+            income_cert = income_cert,
+            fees_receipt = fees_receipt,
+            student_id = studid,
+            scholarship_id = id
+        )
+        db.session.add(add_info)
+        db.session.commit()
+        flash('Scholarship Applied')
+        return redirect(url_for('student.appliedschol'))
+    studid = session['studentID']
+    s = Scholarship.query.filter_by(id=id).first()
+    student = Student.query.filter_by(id=studid).first()
+    return render_template('student/apply-schol.html',id=id,studid=studid,student=student)
 
 
 @student.route('/apply/<sid>/<studid>',methods=['GET','POST'])
@@ -78,8 +160,11 @@ def register():
         name = request.form.get('name')
         email = request.form.get('email')
         phoneno = request.form.get('phoneno')
+        dob = request.form.get('dob')
+        gender = request.form.get('gender')
+        address = request.form.get('address')
         password = request.form.get('password')
-        student = Student(name=name,email=email,phoneno=phoneno,password=password,is_approved=False)
+        student = Student(name=name,email=email,phoneno=phoneno,dob=dob,gender=gender,address=address,password=password,is_approved=False)
         db.session.add(student)
         db.session.commit()
         flash('Student successfully registered')

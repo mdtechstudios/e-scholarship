@@ -27,6 +27,7 @@
                 <th>Name</th>
                 <th>Phone Number</th>
                 <th>Email</th>
+                <th>View Student</th>
                 <th>Is Approved ?</th>
                 <!-- <th>View Student</th> -->
                 <th>Approve/Reject</th>
@@ -41,28 +42,38 @@
                 <td>{{as.appliedschol.phoneno}}</td>
                 <td>{{as.appliedschol.email}}</td>
                 <td>
+                    <a href="{{ url_for('admin.viewstud',scholarship_id=as.scholarship_id,studid=as.appliedschol.id) }}"
+                        class="btn btn-sm btn-secondary" target="_blank">View</a>
+                </td>
+                <td>
                     {% if as.is_approved == False: %}
-                    <p>Not Approved</p>
+                    <p class="btn btn-sm btn-warning">Not Approved</p>
                     {% else: %}
-                    <p>Approved</p>
+                    <p class="btn btn-sm btn-success">Approved</p>
                     {% endif %}
                 </td>
-                <!-- <td>
-                    <a href="{{ url_for('admin.home') }}" class="">View
-                        Student Profile</a>
-                </td> -->
-                {% if as.is_approved == False: %}
                 <td>
                     <a href="{{ url_for('admin.sapprove',id=as.scholarship_id,studid=as.appliedschol.id) }}"
                         class="btn btn-sm btn-warning">Approve</a>
                     <a href="{{ url_for('admin.sreject',id=as.scholarship_id,studid=as.appliedschol.id) }}"
                         class="btn btn-sm btn-danger">Reject</a>
                 </td>
-                {% else: %}
-                <td>
+                <!-- <td>
+                    <a href="{{ url_for('admin.home') }}" class="">View
+                        Student Profile</a>
+                </td> -->
+                <!-- {% if as.is_approved == False: %} -->
+                <!-- <td>
+                    <a href="{{ url_for('admin.sapprove',id=as.scholarship_id,studid=as.appliedschol.id) }}"
+                        class="btn btn-sm btn-warning">Approve</a>
+                    <a href="{{ url_for('admin.sreject',id=as.scholarship_id,studid=as.appliedschol.id) }}"
+                        class="btn btn-sm btn-danger">Reject</a>
+                </td> -->
+                <!-- {% else: %} -->
+                <!-- <td>
                     <button class="btn btn-sm btn-success" disabled>Approved</button>
-                </td>
-                {% endif %}
+                </td> -->
+                <!-- {% endif %} -->
 
             </tr>
             {% endfor %}
@@ -91,6 +102,7 @@
             {% endfor %} -->
         </tbody>
     </table>
+
 </div>
 
 <script>

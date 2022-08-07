@@ -42,25 +42,26 @@
                 <!-- <td>{{s.is_approved}}</td> -->
                 <td>
                     {% if s.is_approved == False: %}
-                    <p>Not Approved</p>
+                    <p class="btn btn-sm btn-warning">Not Approved</p>
                     {% else: %}
-                    <p>Approved</p>
+                    <p class="btn btn-sm btn-success">Approved</p>
                     {% endif %}
+                </td>
+                <td>
+                    <a href="{{ url_for('admin.studapprove',id=s.id) }}" class="btn btn-sm btn-warning">Approve</a>
+                    <a href="{{ url_for('admin.studreject',id=s.id) }}" class="btn btn-sm btn-danger">Disable</a>
                 </td>
                 <!-- <td>
                     <a href="{{ url_for('admin.home') }}" class="">View
                         Student Profile</a>
                 </td> -->
-                {% if s.is_approved == False: %}
-                <td>
-                    <a href="{{ url_for('admin.studapprove',id=s.id) }}" class="btn btn-sm btn-warning">Approve</a>
-                    <a href="{{ url_for('admin.studreject',id=s.id) }}" class="btn btn-sm btn-danger">Reject</a>
-                </td>
+                <!-- {% if s.is_approved == False: %}
+                
                 {% else: %}
                 <td>
                     <button class="btn btn-sm btn-success" disabled>Approved</button>
                 </td>
-                {% endif %}
+                {% endif %} -->
             </tr>
             {% endfor %}
         </tbody>
